@@ -1,0 +1,46 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">{{ 'app.title' | translate }}</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/quizzes" routerLinkActive="active">{{ 'nav.quizzes' | translate }}</a>
+        </li>
+        <li *ngIf="isAdmin()" class="nav-item">
+          <a class="nav-link" routerLink="/admin/quiz/new" routerLinkActive="active">{{ 'nav.newQuiz' | translate }}</a>
+        </li>
+        <li *ngIf="!isLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">{{ 'nav.login' | translate }}</a>
+        </li>
+        <li *ngIf="!isLoggedIn()" class="nav-item">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">{{ 'nav.register' | translate }}</a>
+        </li>
+        <li *ngIf="isLoggedIn()" class="nav-item">
+          <button class="btn btn-outline-danger btn-sm ms-2" (click)="logout()">{{ 'nav.logout' | translate }}</button>
+        </li>
+        
+        <!-- Seletor de idioma -->
+        <li class="nav-item dropdown ms-2">
+          <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+            {{ currentLang === 'pt' ? '🇵🇹 PT' : '🇬🇧 EN' }}
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" (click)="changeLanguage('pt')">🇵🇹 Português</a></li>
+            <li><a class="dropdown-item" (click)="changeLanguage('en')">🇬🇧 English</a></li>
+          </ul>
+        </li>
+        
+        <!-- Botão modo escuro/claro -->
+        <li class="nav-item ms-2">
+          <button class="btn btn-outline-light btn-sm" (click)="toggleTheme()" title="{{ isDarkMode ? 'Mudar para modo claro' : 'Mudar para modo escuro' }}">
+            <span *ngIf="isDarkMode">☀️</span>
+            <span *ngIf="!isDarkMode">🌙</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

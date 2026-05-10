@@ -1,0 +1,28 @@
+<h2 class="mb-4">{{ 'quizzes.title' | translate }}</h2>
+
+<div *ngIf="loading" class="text-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">{{ 'quizzes.loading' | translate }}</span>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">
+  {{ error }}
+</div>
+
+<div class="row" *ngIf="!loading && !error">
+  <div class="col-md-4 mb-4" *ngFor="let quiz of quizzes">
+    <div class="card h-100">
+      <div class="card-body">
+        <h5 class="card-title">{{ quiz.title }}</h5>
+        <p class="card-text">{{ quiz.description || ('quizzes.noDescription' | translate) }}</p>
+        <p class="text-muted small">{{ 'quizzes.createdBy' | translate }} {{ quiz.author_name }}</p>
+        <a [routerLink]="['/quiz', quiz.id]" class="btn btn-primary">{{ 'quizzes.start' | translate }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!loading && !error && quizzes.length === 0" class="alert alert-info">
+  {{ 'quizzes.noQuizzes' | translate }}
+</div>

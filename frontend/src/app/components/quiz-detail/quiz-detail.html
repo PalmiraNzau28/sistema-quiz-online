@@ -1,0 +1,58 @@
+<div *ngIf="loading" class="text-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">{{ 'quizzes.loading' | translate }}</span>
+  </div>
+</div>
+
+<div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+<div *ngIf="!loading && !error && quiz">
+  <div class="card">
+    <div class="card-header">
+      <h2>{{ quiz.title }}</h2>
+      <p>{{ quiz.description }}</p>
+    </div>
+    <div class="card-body">
+      <div *ngIf="!submitted">
+        <form (ngSubmit)="submitQuiz()">
+          <div *ngFor="let question of quiz.questions; let i = index" class="mb-4">
+            <h5>{{ i + 1 }}. {{ question.question_text }}</h5>
+            
+            <div class="form-check" *ngFor="let answer of question.answers">
+              <input 
+                class="form-check-input" 
+                type="radio" 
+                [name]="'question_' + question.id"
+                [value]="answer.id"
+                [(ngModel)]="answers[question.id]"
+                required>
+              <label class="form-check-label">
+                {{ answer.answer_text }}
+              </label>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-success" [disabled]="!isFormComplete()">
+            {{ 'quiz.submit' | translate }}
+          </button>
+        </form>
+      </div>
+      
+      <div *ngIf="submitted">
+        <div class="alert alert-success">
+          <h4>{{ 'quiz.score' | translate }}: {{ score }} / {{ totalQuestions }}</h4>
+          <p>{{ 'quiz.correct' | translate }} {{ score }} {{ 'quiz.questions' | translate }}.</p>
+          
+          <div class="mt-3">
+            <button class="btn btn-info me-2" (click)="exportToCSV()">📊 {{ 'quiz.exportCSV' | translate }}</button>
+            <button class="btn btn-info" (click)="exportToPDF()">📄 {{ 'quiz.exportPDF' | translate }}</button>
+          </div>
+          
+          <div class="mt-3">
+            <a routerLink="/quizzes" class="btn btn-primary">{{ 'quiz.back' | translate }}</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
